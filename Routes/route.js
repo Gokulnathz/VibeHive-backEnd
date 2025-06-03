@@ -1,0 +1,31 @@
+const express= require('express');
+const router= express.Router();
+const userController= require('../Controllers/userController')
+const auth= require('../middleware/auth');
+const postController= require('../Controllers/postController');
+
+router.get('/',userController.serverMessage);
+router.post('/register',userController.register);
+router.post('/login',userController.login);
+router.get('/logout',userController.logout);    
+router.post('/post/upload',auth.isAuthenticated,postController.createPost);
+router.get('/post/:id/like',auth.isAuthenticated,postController.likeAndUnlikePost);
+router.delete('/post/:id/delete',auth.isAuthenticated,postController.deletePost);
+router.get('/follow/:id',auth.isAuthenticated,userController.followUser);
+router.get('/posts',auth.isAuthenticated,postController.getPostOfFollowing);
+router.get('/mypost/:id',auth.isAuthenticated,userController.getMyPosts);
+router.put('/update/password',auth.isAuthenticated,userController.updatePassword);
+router.put('/update/profile',auth.isAuthenticated,userController.updateProfile);
+router.put('/update/caption/:id',auth.isAuthenticated,postController.updateCaption);
+router.delete('/delete/profile',auth.isAuthenticated,userController.deleteMyProfile);
+router.get('/my/profile',auth.isAuthenticated,userController.myProfile);
+router.get('/userpost/:id',auth.isAuthenticated,userController.getUserPost);
+router.get('/user/:id',auth.isAuthenticated,userController.getUserProfile);
+router.get('/userslist',userController.getAllUserNames);
+router.get('/users',auth.isAuthenticated,userController.getAllUsers);
+router.put('/add/comment/:id',auth.isAuthenticated,postController.addComment);
+router.delete('/delete/comment/:id',auth.isAuthenticated,postController.deleteComment);
+router.post('/token/validate/:token',userController.tokenValidate);
+router.post('/forgot/password',userController.forgotPassword);
+router.put('/password/reset/:token',userController.resetPassword);
+module.exports=router;
